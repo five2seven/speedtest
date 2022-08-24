@@ -1,17 +1,18 @@
 # Internet Speed Test in a Container
 
-[![Docker](https://img.shields.io/badge/Docker%20Hub-robinmanuelthiel/speedtest-blue.svg?logo=docker)](https://hub.docker.com/r/robinmanuelthiel/speedtest/)
+Forked from https://github.com/robinmanuelthiel/speedtest but added the ISP to the results to help me ensure that my container is running through a VPN connection. 
 
 Check your internet bandwidth using the [Speedtest CLI](https://www.speedtest.net/apps/cli) from a Docker container. You can configure the tool to run periodically and save the results to an InfluxDB for visualization or long-term records.
 
 ```bash
-docker run --rm robinmanuelthiel/speedtest:latest
+docker run --rm five2seven/speedtest:latest
 ```
 
 The result will then look like this:
 
 ```bash
 Running a Speed Test...
+Your ISP is Comcast Communications
 Your download speed is 334 Mbps (29284399 Bytes/s).
 Your upload speed is 42 Mbps (4012944 Bytes/s).
 Your ping is 6.223 ms.
@@ -61,7 +62,7 @@ services:
       - INFLUXDB_DB="speedtest"
 
   speedtest:
-    image: robinmanuelthiel/speedtest:latest
+    image: five2seven/speedtest:latest
     environment:
       - LOOP=true
       - LOOP_DELAY=1800
