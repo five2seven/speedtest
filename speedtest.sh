@@ -19,6 +19,8 @@ run_speedtest()
     DOWNLOAD="$(echo $JSON | jq -r '.download.bandwidth')"
     UPLOAD="$(echo $JSON | jq -r '.upload.bandwidth')"
     PING="$(echo $JSON | jq -r '.ping.latency')"
+    ISP="$(echo $JSON | jq -r '.ISP')"
+    echo "Your ISP is $ISP."
     echo "Your download speed is $(($DOWNLOAD  / 125000 )) Mbps ($DOWNLOAD Bytes/s)."
     echo "Your upload speed is $(($UPLOAD  / 125000 )) Mbps ($UPLOAD Bytes/s)."
     echo "Your ping is $PING ms."
@@ -33,6 +35,8 @@ run_speedtest()
             --data-binary "upload,host=$HOSTNAME value=$UPLOAD $DATE"
         curl -s -S -XPOST "$DB_HOST/write?db=$DB_NAME&precision=s&u=$DB_USERNAME&p=$DB_PASSWORD" \
             --data-binary "ping,host=$HOSTNAME value=$PING $DATE"
+        curl -s -S -XPOST "$DB_HOST/write?db=$DB_NAME&precision=s&u=$DB_USERNAME&p=$DB_PASSWORD" \
+            --data-binary "isp,host=$HOSTNAME value=$ISP $DATE"
         echo "Values saved."
     fi
 }
